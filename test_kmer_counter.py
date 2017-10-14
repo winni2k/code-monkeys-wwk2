@@ -1,3 +1,5 @@
+import io
+
 import pytest
 
 import kmer_counter
@@ -61,4 +63,14 @@ class TestCount(object):
         assert count['T'] == 1
 
 
+class TestFastaRecords(object):
+    def test_returns_one_string_from_fh_with_one_record(self):
+        # given
+        file_handle = io.StringIO('>seq1\nAAAAA\n')
 
+        # when
+        record = next(kmer_counter.fasta_records(file_handle))
+
+        # then
+        assert record.desc == 'seq1'
+        assert record.seq == 'AAAAA'
